@@ -77,7 +77,7 @@ class PickupLine:
         Example line:
         '  Pickup library:"LIBRARY LOCATION CODE"                        Date of discharge:MM/DD/YYYY'
         """
-        m = re.search(r'Pickup library:"([^"]+)"\s+Date of discharge:(\S+)', line)
+        m = re.search(r'Pickup library:+"?([^"]+)"?\s+Date of discharge:(\S+)', line)
         if not m:
             raise ValueError(f"Cannot parse pickup line: {line}")
 
@@ -163,11 +163,13 @@ class SirsiParser:
     
         entries = []
         # Split by double newline between blocks
-        blocks = [b for b in self.text.split("\n\n") if b.strip()]
+        blocks = [b for b in re.split(r'\n\s*\n', self.text.strip()) if b.strip()]
         for block in blocks:
             try:
                 entry = SirsiEntry(block)
                 entries.append(entry)
             except ValueError:
                 continue
+
+        # Always return a SirsiReport, even if entries is empty
         return SirsiReport(header, entries)
