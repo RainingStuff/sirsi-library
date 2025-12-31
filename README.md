@@ -2,6 +2,7 @@
 parses output from Sirsi into a more useful format for some person on reddit
 
 run it by doing something like:
+
 python main.py "Sirsi WorkFlows Text Report.txt" -o SirsiFinalOutput.txt --sort_order FICTION NONFICTION GRAPHICNVL
 
 first arguement is the sirsi report
